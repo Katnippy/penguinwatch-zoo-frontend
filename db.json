@@ -1,0 +1,47 @@
+{
+  "zoos": [
+    {
+      "id": 1,
+      "name": "National SEA LIFE Centre Birmingham",
+      "location": "Birmingham, West Midlands, England",
+      "coords": "52.48, -1.91",
+      "penguins": [
+        {
+          "species": "Gentoo Penguins",
+          "count": "Unknown"
+        }
+      ],
+      "date": "25/08/23"
+    },
+    {
+      "id": 2,
+      "name": "Dudley Zoo",
+      "location": "Dudley, West Midlands, England",
+      "coords": "52.48, -1.91",
+      "penguins": [
+        {
+          "species": "Humboldt Penguins",
+          "count": 7
+        }
+      ],
+      "date": "06/10/23"
+    },
+    {
+      "id": 3,
+      "name": "Whipsnade Zoo",
+      "location": "Whipsnade, Bedfordshire, England",
+      "coords": "51.85, -0.54",
+      "penguins": [
+        {
+          "species": "African Penguins",
+          "count": "Unknown"
+        },
+        {
+          "species": "Northern Rockhopper Penguins",
+          "count": "Unknown"
+        }
+      ],
+      "date": "22/01/24"
+    }
+  ]
+}
