@@ -8,10 +8,10 @@ interface IZoo {
   id: number,
   name: string,
   location: string,
-  coords: string,
+  coords: { lat: number, lng: number },
   penguins: Array<{ species: string, count: number | string }>,
   date: string,
-}
+};
 
 export default function MapPins() {
   const [zoos, setZoos] = useState<Array<IZoo>>([]);
@@ -28,21 +28,9 @@ export default function MapPins() {
 
   return (
     <>
-      {/* <MapPin /> */}
-      <ul>
-        {zoos.map((zoo, element) => (
-          <li key={element}>
-            <h3>{zoo.name}</h3>
-            <p>{zoo.location} ({zoo.coords})</p>
-            <ul>
-              {zoo.penguins.map((penguin, element) => (
-                <li key={element}>{penguin.species}: {penguin.count}</li>
-              ))}
-            </ul>
-            <p>Correct as of {zoo.date}</p>
-          </li>
-        ))}
-      </ul>
+      {zoos.map((zoo) => (
+        <MapPin key={zoo.id} zoo={zoo}/>
+      ))}
     </>
   );
 }
