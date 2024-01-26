@@ -25,3 +25,5 @@ dist-ssr
 
 README.md
 .env
+*.css
+*.css.map

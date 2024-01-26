@@ -7,7 +7,7 @@ export default function GoogleMap() {
 
   return (
     <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string}>
-      <div style={{ height: "100vh" }}>
+      <div id="map" style={{ width: "100vw", height: "100vh" }}>
         <Map
           zoom={7}
           center={centre}
