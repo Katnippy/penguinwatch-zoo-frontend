@@ -3,6 +3,7 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import { DateTime } from 'luxon';
 
 import { IZoo } from '../common/types';
+import Input from './Input';
 
 type AddUpdateFormProps = {
   zoos: Array<IZoo>,
@@ -75,19 +76,16 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     <>
       <h2>Add / Update Form</h2>
       <form onSubmit={addZoo}>
-        <label htmlFor="name">Name: </label>
-        <input id="name" value={newName} onChange={handleNameChange}
-          required />
+        <Input name={'name'} text={'Name: '} value={newName}
+          onChange={handleNameChange} />
         <br />
-        <label htmlFor="location">Location: </label>
-        <input id="location" value={newLocation}
-          onChange={handleLocationChange} required />
+        <Input name={'location'} text={'Location: '} value={newLocation}
+          onChange={handleLocationChange} />
         <br />
-        <label htmlFor="lat">Coordinates: </label>
-        <input id="lat" value={newLat} onChange={handleLatChange}
-        required />
-        <input id="lng" value={newLng} onChange={handleLngChange}
-        required />
+        <Input name={'lat'} text={'Coordinates: '} value={newLat}
+          onChange={handleLatChange} />
+        <Input name={'lng'} text={''} value={newLng}
+          onChange={handleLngChange} />
         <br />
         <label htmlFor="species">Penguins: </label>
         <select id="species" value={newSpecies}
