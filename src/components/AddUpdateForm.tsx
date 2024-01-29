@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 
 import { DateTime } from 'luxon';
 
@@ -27,7 +27,7 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
   }
   // ! Needs validation.
   // TODO: Let the user add as many species as they want.
-  function addZoo(event: MouseEvent) {
+  function addZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const zooObject: IZoo = {
       id: zoos.length + 1, // ! Bad, will break if a zoo is deleted.
@@ -46,28 +46,28 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     clearInputs();
   }
 
-  function handleNameChange(event: InputEvent) {
-    setNewName((event.target as HTMLTextAreaElement).value);
+  function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
+    setNewName(event.target.value);
   }
 
-  function handleLocationChange(event: InputEvent) {
-    setNewLocation((event.target as HTMLTextAreaElement).value);
+  function handleLocationChange(event: ChangeEvent<HTMLInputElement>) {
+    setNewLocation(event.target.value);
   }
 
-  function handleLatChange(event: InputEvent) {
-    setNewLat((event.target as HTMLTextAreaElement).value);
+  function handleLatChange(event: ChangeEvent<HTMLInputElement>) {
+    setNewLat(event.target.value);
   }
 
-  function handleLngChange(event: InputEvent) {
-    setNewLng((event.target as HTMLTextAreaElement).value);
+  function handleLngChange(event: ChangeEvent<HTMLInputElement>) {
+    setNewLng(event.target.value);
   }
 
-  function handleSpeciesChange(event: InputEvent) {
-    setNewSpecies((event.target as HTMLTextAreaElement).value);
+  function handleSpeciesChange(event: ChangeEvent<HTMLSelectElement>) {
+    setNewSpecies(event.target.value);
   }
 
-  function handleCountChange(event: InputEvent) {
-    setNewCount((event.target as HTMLTextAreaElement).value);
+  function handleCountChange(event: ChangeEvent<HTMLInputElement>) {
+    setNewCount(event.target.value);
   }
 
   // TODO: Refactor.
