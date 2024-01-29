@@ -1,16 +1,8 @@
-import { useState, Fragment } from 'react';
+import { useState } from 'react';
 
 import { AdvancedMarker, Pin, InfoWindow } from '@vis.gl/react-google-maps';
 
-// ? Can we import this?
-interface IZoo {
-  id: number,
-  name: string,
-  location: string,
-  coords: { lat: number, lng: number },
-  penguins: Array<{ species: string, count: number | string }>,
-  date: string,
-};
+import { IZoo } from '../common/types';
 
 type MapPinProps = {
   zoo: IZoo,

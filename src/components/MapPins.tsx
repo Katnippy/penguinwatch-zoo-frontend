@@ -1,31 +1,11 @@
-import { useState, useEffect } from 'react';
-
-import axios from 'axios';
-
+import { IZoo } from '../common/types';
 import MapPin from './MapPin';
 
-interface IZoo {
-  id: number,
-  name: string,
-  location: string,
-  coords: { lat: number, lng: number },
-  penguins: Array<{ species: string, count: number | string }>,
-  date: string,
+type MapPinsProps = {
+  zoos: Array<IZoo>,
 };
 
-export default function MapPins() {
-  const [zoos, setZoos] = useState<Array<IZoo>>([]);
-  useEffect(() => {
-    void (async function hook() {
-      try {
-        const res = await axios.get<Array<IZoo>>('http://localhost:3001/zoos');
-        setZoos(res.data);
-      } catch (e) {
-        console.error('Error fetching data: ', e);
-      }
-    })();
-  }, []);
-
+export default function MapPins({ zoos }: MapPinsProps) {
   return (
     <>
       {zoos.map((zoo) => (
