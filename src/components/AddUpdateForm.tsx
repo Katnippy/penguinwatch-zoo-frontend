@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 
 import { IZoo } from '../common/types';
 import Input from './Input';
+import Select from './Select';
 
 type AddUpdateFormProps = {
   zoos: Array<IZoo>,
@@ -87,34 +88,8 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
         <Input name={'lng'} text={''} value={newLng}
           onChange={handleLngChange} />
         <br />
-        <label htmlFor="species">Penguins: </label>
-        <select id="species" value={newSpecies}
-          onChange={handleSpeciesChange} required>
-          <option value="King Penguins">King Penguins</option>
-          <option value="Emperor Penguins">Emperor Penguins</option>
-          <option value="Adélie Penguins">Adélie Penguins</option>
-          <option value="Chinstrap Penguins">Chinstrap Penguins</option>
-          <option value="Gentoo Penguins">Gentoo Penguins</option>
-          <option value="Little Penguins">Little Penguins</option>
-          <option value="Magellanic Penguins">Magellanic Penguins</option>
-          <option value="Humboldt Penguins">Humboldt Penguins</option>
-          <option value="Galápagos Penguins">Galápagos Penguins</option>
-          <option value="African Penguins">African Penguins</option>
-          <option value="Yellow-eyed Penguins">Yellow-eyed Penguins</option>
-          <option value="Fiordland Penguins">Fiordland Penguins</option>
-          <option value="Snares Penguins">Snares Penguins</option>
-          <option value="Erect-crested Penguins">
-            Erect-crested Penguins
-          </option>
-          <option value="Southern Rockhopper Penguins">
-            Southern Rockhopper Penguins
-          </option>
-          <option value="Northern Rockhopper Penguins">
-            Northern Rockhopper Penguins
-          </option>
-          <option value="Royal Penguins">Royal Penguins</option>
-          <option value="Macaroni Penguins">Macaroni Penguins</option>
-        </select>
+        <Select name={'species'} text={'Penguins: '} value={newSpecies}
+          onChange={handleSpeciesChange} />
         <input type="number" id="count" value={newCount}
           onChange={handleCountChange} min="0" max="250" required />
         <br />
