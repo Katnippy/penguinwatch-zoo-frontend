@@ -3,6 +3,7 @@ import { useState, FormEvent, ChangeEvent, MouseEvent } from 'react';
 import { DateTime } from 'luxon';
 
 import { IZoo } from '../common/types';
+import Notification from './Notification';
 import Input from './Input';
 
 type AddUpdateFormProps = {
@@ -11,6 +12,7 @@ type AddUpdateFormProps = {
 };
 
 export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
+  const [notification, setNotification] = useState<object | { message: string, style: string }>({});
   const [newName, setNewName] = useState<string>('');
   const [newLocation, setNewLocation] = useState<string>('');
   const [newLat, setNewLat] = useState<string>('');
@@ -124,6 +126,8 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
   return (
     <>
       <h2>Add / Update Form</h2>
+      {/* ? Is there a better way to handle the conditional rendering here? */}
+      {notification ? <Notification notification={notification} /> : ''}
       <form onSubmit={addZoo}>
         <Input name={'name'} text={'Name: '} value={newName}
           onChange={handleNameChange} />
