@@ -1,10 +1,9 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent, MouseEvent } from 'react';
 
 import { DateTime } from 'luxon';
 
 import { IZoo } from '../common/types';
 import Input from './Input';
-import Select from './Select';
 
 type AddUpdateFormProps = {
   zoos: Array<IZoo>,
@@ -16,19 +15,19 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
   const [newLocation, setNewLocation] = useState<string>('');
   const [newLat, setNewLat] = useState<string>('');
   const [newLng, setNewLng] = useState<string>('');
-  const [newSpecies, setNewSpecies] = useState<string>('King Penguins');
-  const [newCount, setNewCount] = useState<string>('');
+  const [newPenguins, setNewPenguins] =
+    useState<Array<{ id: number, species: string, count: string }>>(
+      [{ id: 1, species: 'King Penguins', count: '' }]
+    );
 
   function clearInputs() {
     setNewName('');
     setNewLocation('');
     setNewLat('');
     setNewLng('');
-    setNewSpecies('King Penguins');
-    setNewCount('');
+    setNewPenguins([{ id: 1, species: 'King Penguins', count: '' }]);
   }
   // ! Needs validation.
-  // TODO: Let the user add as many species as they want.
   function addZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const zooObject: IZoo = {
@@ -36,12 +35,12 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       name: newName,
       location: newLocation,
       coords: { lat: +newLat, lng: +newLng },
-      penguins: [
-        {
-          species: newSpecies,
-          count: newCount === '0' ? 'Unknown' : +newCount
-        }
-      ],
+      penguins: newPenguins.map((penguin) => {
+        return {
+          species: penguin.species,
+          count: penguin.count === '0' ? 'Unknown' : +penguin.count
+        };
+      }),
       date: DateTime.now().toFormat('dd/MM/yy'),
     };
     setZoos(zoos.concat(zooObject));
@@ -64,13 +63,62 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     setNewLng(event.target.value);
   }
 
-  function handleSpeciesChange(event: ChangeEvent<HTMLSelectElement>) {
-    setNewSpecies(event.target.value);
+  function handleSelectChange(event: ChangeEvent<HTMLSelectElement>,
+                              id: number) {
+    const updatedPenguins = newPenguins.map((penguin) =>
+      penguin.id === id ? { ...penguin, species: event.target.value } : penguin
+    );
+    setNewPenguins(updatedPenguins);
   }
 
-  function handleCountChange(event: ChangeEvent<HTMLInputElement>) {
-    setNewCount(event.target.value);
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>,
+                             id: number) {
+    const updatedPenguins = newPenguins.map((penguin) =>
+      penguin.id === id ? { ...penguin, count: event.target.value } : penguin
+    );
+    setNewPenguins(updatedPenguins);
   }
+
+  function addField(event: MouseEvent) {
+    event.preventDefault();
+    if (newPenguins.length < 18) {
+      const newId = newPenguins.at(-1).id + 1; // ? Is this solution okay?
+      setNewPenguins(
+        [...newPenguins, { id: newId, species: 'King Penguins', count: '' }]
+      );
+    }
+  }
+
+  function deleteField(event: MouseEvent, idToRemove: number) {
+    event.preventDefault();
+    if (newPenguins.length > 0) {
+      const updatedPenguins = newPenguins.filter(
+        (penguin) => penguin.id !== idToRemove
+      );
+      setNewPenguins(updatedPenguins);
+    }
+  }
+
+  const allSpecies: Array<string> = [
+    'King Penguins',
+    'Emperor Penguins',
+    'Adélie Penguins',
+    'Chinstrap Penguins',
+    'Gentoo Penguins',
+    'Little Penguins',
+    'Magellanic Penguins',
+    'Humboldt Penguins',
+    'Galápagos Penguins',
+    'African Penguins',
+    'Yellow-eyed Penguins',
+    'Fiordland Penguins',
+    'Snares Penguins',
+    'Erect-crested Penguins',
+    'Southern Rockhopper Penguins',
+    'Northern Rockhopper Penguins',
+    'Royal Penguins',
+    'Macaroni Penguins'
+  ];
 
   // TODO: Refactor.
   return (
@@ -88,11 +136,23 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
         <Input name={'lng'} text={''} value={newLng}
           onChange={handleLngChange} />
         <br />
-        <Select name={'species'} text={'Penguins: '} value={newSpecies}
-          onChange={handleSpeciesChange} />
-        <input type="number" id="count" value={newCount}
-          onChange={handleCountChange} min="0" max="250" required />
-        <br />
+        {/* ? Doesn't `<label>` really need a `htmlFor` attribute? */}
+        <label>Penguins: </label>
+        {newPenguins.map(({ id }) => (
+          <div key={id}>
+            <select onChange={(event) => handleSelectChange(event, id)}>
+              {allSpecies.map((species) =>
+                <option key={species} value={species}>{species}</option>)}
+            </select>
+            <input type="number"
+              onChange={(event) => handleInputChange(event, id)}></input>
+            <button onClick={(event) => addField(event)}>+</button>
+            {newPenguins.length > 1 ?
+              <button onClick={(event) => deleteField(event, id)}>
+                -
+              </button> : ''}
+          </div>
+        ))}
         <button type="submit">Save</button>
       </form>
     </>

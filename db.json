@@ -10,6 +10,7 @@
       },
       "penguins": [
         {
+          "id": 1,
           "species": "Gentoo Penguins",
           "count": "Unknown"
         }
@@ -26,6 +27,7 @@
       },
       "penguins": [
         {
+          "id": 1,
           "species": "Humboldt Penguins",
           "count": 7
         }
@@ -42,10 +44,12 @@
       },
       "penguins": [
         {
+          "id": 1,
           "species": "African Penguins",
           "count": "Unknown"
         },
         {
+          "id": 2,
           "species": "Northern Rockhopper Penguins",
           "count": "Unknown"
         }
