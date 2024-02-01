@@ -39,12 +39,14 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     }
 
     if (zooObject.coords.lat <= MIN_LAT || zooObject.coords.lat >= MAX_LAT) {
-      console.log('INVALID');
+      return false;
     } else if (zooObject.coords.lat <= MIN_LNG || zooObject.coords.lat >= MAX_LNG) {
-      console.log('INVALID');
+      return false;
     } else if (checkForDuplicateSpecies(zooObject)) {
-      console.log('INVALID');
+      return false;
     }
+
+    return true;
   }
   function clearInputs() {
     setNewName('');
@@ -69,9 +71,12 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       }),
       date: DateTime.now().toFormat('dd/MM/yy'),
     };
-    validateZooObject(zooObject);
-    setZoos(zoos.concat(zooObject));
-    clearInputs();
+    if (validateZooObject(zooObject)) {
+      setZoos(zoos.concat(zooObject));
+      clearInputs();
+    } else {
+      alert('INVALID');
+    }
   }
 
   function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
