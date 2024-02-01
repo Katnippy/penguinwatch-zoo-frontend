@@ -22,12 +22,36 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       [{ id: 1, species: 'King Penguins', count: '' }]
     );
 
+  function validateZooObject(zooObject: IZoo) {
+    const MIN_LAT: number = -90;
+    const MAX_LAT: number = 90;
+    const MIN_LNG: number = -180;
+    const MAX_LNG: number = 180;
+
+    function checkForDuplicateSpecies(zooObject: IZoo) {
+      const species = zooObject.penguins.map((penguin) => penguin.species);
+      const speciesSet = new Set(species);
+      if (species.length !== speciesSet.size) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    if (zooObject.coords.lat <= MIN_LAT || zooObject.coords.lat >= MAX_LAT) {
+      console.log('INVALID');
+    } else if (zooObject.coords.lat <= MIN_LNG || zooObject.coords.lat >= MAX_LNG) {
+      console.log('INVALID');
+    } else if (checkForDuplicateSpecies(zooObject)) {
+      console.log('INVALID');
+    }
+  }
   function clearInputs() {
     setNewName('');
     setNewLocation('');
     setNewLat('');
     setNewLng('');
-    setNewPenguins([{ id: 1, species: 'King Penguins', count: '' }]);
+    setNewPenguins([{ id: 1, species: 'King Penguins', count: '' }]); // ! Broken.
   }
   // ! Needs validation.
   function addZoo(event: FormEvent<HTMLFormElement>) {
@@ -35,7 +59,7 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     const zooObject: IZoo = {
       id: zoos.length + 1, // ! Bad, will break if a zoo is deleted.
       name: newName,
-      location: newLocation,
+      location: newLocation, // ? Determine this from the coords?
       coords: { lat: +newLat, lng: +newLng },
       penguins: newPenguins.map((penguin) => {
         return {
@@ -45,6 +69,7 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       }),
       date: DateTime.now().toFormat('dd/MM/yy'),
     };
+    validateZooObject(zooObject);
     setZoos(zoos.concat(zooObject));
     clearInputs();
   }
