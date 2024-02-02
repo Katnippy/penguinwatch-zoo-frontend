@@ -53,7 +53,8 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       }
     }
 
-    // TODO: Need validations for when name, location, or coords already exist.
+    // TODO: Need validations for when name, location, or coords already exist,
+    // TODO: and when coords aren't a valid number.
     const validations = [];
     let validated = true;
     if (zooObject.coords.lat <= MIN_LAT || zooObject.coords.lat >= MAX_LAT) {
@@ -97,7 +98,10 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       id: zoos.length + 1, // ! Bad, will break if a zoo is deleted.
       name: newName,
       location: newLocation, // ? Determine this from the coords?
-      coords: { lat: +newLat, lng: +newLng },
+      coords: {
+        lat: +parseFloat(newLat).toFixed(4),
+        lng: +parseFloat(newLng).toFixed(4)
+      },
       penguins: newPenguins.map((penguin) => {
         return {
           species: penguin.species,
