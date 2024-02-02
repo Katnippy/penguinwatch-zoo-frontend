@@ -19,14 +19,23 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
   const [newLat, setNewLat] = useState<string>('');
   const [newLng, setNewLng] = useState<string>('');
   const [newPenguins, setNewPenguins] =
-    useState<Array<{ id: number, species: string, count: string }>>(
-      [{ id: 1, species: 'King Penguins', count: '' }]
-    );
+    useState<Array<{ id: number, species: string, count: string }>>([]);
 
+  // Maybe a temporary fix because of
+  // `setNewPenguins([{ id: 1, species: 'King Penguins', count: '' }])` in
+  // `clearInputs()` not working as desired due to its async nature. Instead,
+  // we forcefully `setNewPenguins()` every time `newPenguins` is cleared.
+  useEffect(() => {
+    if (newPenguins.length === 0) {
+      setNewPenguins([{ id: 1, species: 'King Penguins', count: '' }]);
+    }
+  }, [newPenguins]);
+
+  // ! Timer doesn't restart on cumulative notifications.
   function clearNotifications() {
     setTimeout(() => {
       setNotifications([]);
-    }, 5000000000);
+    }, 5000);
   }
   function validateZooObject(zooObject: IZoo) {
     const MIN_LAT: number = -90;
@@ -80,8 +89,7 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     setNewLocation('');
     setNewLat('');
     setNewLng('');
-    // ! Broken.
-    setNewPenguins([{ id: 1, species: 'King Penguins', count: '' }]);
+    setNewPenguins([]);
   }
   function addZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

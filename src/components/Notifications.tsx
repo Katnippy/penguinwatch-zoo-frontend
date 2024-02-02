@@ -4,6 +4,7 @@ type NotificationProps = {
   notifications: Array<{ message: string, style: string }>
 };
 
+// TODO: Refactor.
 export default function Notifications({ notifications }: NotificationProps) {
   return (
     <>
