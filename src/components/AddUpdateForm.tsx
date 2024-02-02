@@ -1,9 +1,9 @@
-import { useState, FormEvent, ChangeEvent, MouseEvent } from 'react';
+import { useState, useEffect, FormEvent, ChangeEvent, MouseEvent } from 'react';
 
 import { DateTime } from 'luxon';
 
 import { IZoo } from '../common/types';
-import Notification from './Notification';
+import Notifications from './Notifications';
 import Input from './Input';
 
 type AddUpdateFormProps = {
@@ -12,7 +12,8 @@ type AddUpdateFormProps = {
 };
 
 export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
-  const [notification, setNotification] = useState<object | { message: string, style: string }>({});
+  const [notifications, setNotifications] =
+    useState<Array<{ message: string, style: string }>>([]);
   const [newName, setNewName] = useState<string>('');
   const [newLocation, setNewLocation] = useState<string>('');
   const [newLat, setNewLat] = useState<string>('');
@@ -22,6 +23,11 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       [{ id: 1, species: 'King Penguins', count: '' }]
     );
 
+  function clearNotifications() {
+    setTimeout(() => {
+      setNotifications([]);
+    }, 5000000000);
+  }
   function validateZooObject(zooObject: IZoo) {
     const MIN_LAT: number = -90;
     const MAX_LAT: number = 90;
@@ -38,24 +44,45 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       }
     }
 
+    // TODO: Need validations for when name, location, or coords already exist.
+    const validations = [];
+    let validated = true;
     if (zooObject.coords.lat <= MIN_LAT || zooObject.coords.lat >= MAX_LAT) {
-      return false;
-    } else if (zooObject.coords.lat <= MIN_LNG || zooObject.coords.lat >= MAX_LNG) {
-      return false;
-    } else if (checkForDuplicateSpecies(zooObject)) {
-      return false;
+      validations.push(
+        { message: 'Latitude must be between -90 and 90.', style: 'error' }
+      );
+      validated = false;
     }
+    if (zooObject.coords.lng <= MIN_LNG || zooObject.coords.lng >= MAX_LNG) {
+      validations.push(
+        { message: 'Longitude must be between -180 and 180.', style: 'error' }
+      );
+      validated = false;
+    }
+    if (checkForDuplicateSpecies(zooObject)) {
+      validations.push(
+        { message: 'Duplicated species.', style: 'error' }
+      );
+      validated = false;
+    }
+    if (validated) {
+      validations.push({
+        message: `Successfully added ${zooObject.name} to the map.`,
+        style: 'success'
+      });
+    }
+    setNotifications(validations); // ? Shouldn't this go elsewhere?
 
-    return true;
+    return validated;
   }
   function clearInputs() {
     setNewName('');
     setNewLocation('');
     setNewLat('');
     setNewLng('');
-    setNewPenguins([{ id: 1, species: 'King Penguins', count: '' }]); // ! Broken.
+    // ! Broken.
+    setNewPenguins([{ id: 1, species: 'King Penguins', count: '' }]);
   }
-  // ! Needs validation.
   function addZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const zooObject: IZoo = {
@@ -74,8 +101,9 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     if (validateZooObject(zooObject)) {
       setZoos(zoos.concat(zooObject));
       clearInputs();
+      clearNotifications();
     } else {
-      alert('INVALID');
+      clearNotifications();
     }
   }
 
@@ -157,7 +185,7 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     <>
       <h2>Add / Update Form</h2>
       {/* ? Is there a better way to handle the conditional rendering here? */}
-      {notification ? <Notification notification={notification} /> : ''}
+      {notifications ? <Notifications notifications={notifications} /> : ''}
       <form onSubmit={addZoo}>
         <Input name={'name'} text={'Name: '} value={newName}
           onChange={handleNameChange} />
