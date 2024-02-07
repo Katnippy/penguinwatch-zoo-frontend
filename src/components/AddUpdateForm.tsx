@@ -3,6 +3,7 @@ import { useState, useEffect, FormEvent, ChangeEvent, MouseEvent } from 'react';
 import { DateTime } from 'luxon';
 
 import { IZoo } from '../common/types';
+import validateZooObject from '../utils/validator';
 import Notifications from './Notifications';
 import Input from './Input';
 
@@ -16,7 +17,7 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     useState<Array<{ message: string, style: string }>>([]);
   const [newName, setNewName] = useState<string>('');
   const [newLocation, setNewLocation] = useState<string>('');
-  const [newLat, setNewLat] = useState<string>('');
+  const [newLat, setNewLat] = useState<string>(''); // ? Combine as coords?
   const [newLng, setNewLng] = useState<string>('');
   const [newPenguins, setNewPenguins] =
     useState<Array<{ id: number, species: string, count: string }>>([]);
@@ -36,54 +37,6 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     setTimeout(() => {
       setNotifications([]);
     }, 5000);
-  }
-  function validateZooObject(zooObject: IZoo) {
-    const MIN_LAT: number = -90;
-    const MAX_LAT: number = 90;
-    const MIN_LNG: number = -180;
-    const MAX_LNG: number = 180;
-
-    function checkForDuplicateSpecies(zooObject: IZoo) {
-      const species = zooObject.penguins.map((penguin) => penguin.species);
-      const speciesSet = new Set(species);
-      if (species.length !== speciesSet.size) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    // TODO: Need validations for when name, location, or coords already exist,
-    // TODO: and when coords aren't a valid number.
-    const validations = [];
-    let validated = true;
-    if (zooObject.coords.lat <= MIN_LAT || zooObject.coords.lat >= MAX_LAT) {
-      validations.push(
-        { message: 'Latitude must be between -90 and 90.', style: 'error' }
-      );
-      validated = false;
-    }
-    if (zooObject.coords.lng <= MIN_LNG || zooObject.coords.lng >= MAX_LNG) {
-      validations.push(
-        { message: 'Longitude must be between -180 and 180.', style: 'error' }
-      );
-      validated = false;
-    }
-    if (checkForDuplicateSpecies(zooObject)) {
-      validations.push(
-        { message: 'Duplicated species.', style: 'error' }
-      );
-      validated = false;
-    }
-    if (validated) {
-      validations.push({
-        message: `Successfully added ${zooObject.name} to the map.`,
-        style: 'success'
-      });
-    }
-    setNotifications(validations); // ? Shouldn't this go elsewhere?
-
-    return validated;
   }
   function clearInputs() {
     setNewName('');
@@ -110,11 +63,17 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       }),
       date: DateTime.now().toFormat('dd/MM/yy'),
     };
-    if (validateZooObject(zooObject)) {
+
+    const { validated, validations } = validateZooObject(zooObject);
+    // TODO: Refactor.
+    if (validated) {
       setZoos(zoos.concat(zooObject));
       clearInputs();
+      setNotifications(validations);
       clearNotifications();
     } else {
+      console.log(validations);
+      setNotifications(validations);
       clearNotifications();
     }
   }
