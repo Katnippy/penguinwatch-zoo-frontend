@@ -186,7 +186,7 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
                 <option key={species} value={species}>{species}</option>)}
             </select>
             <input type="number"
-              onChange={(event) => handleInputChange(event, id)}></input>
+              onChange={(event) => handleInputChange(event, id)} required />
             <button onClick={(event) => addField(event)}>+</button>
             {newPenguins.length > 1 ?
               <button onClick={(event) => deleteField(event, id)}>
