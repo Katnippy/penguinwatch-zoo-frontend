@@ -2,8 +2,8 @@ import { useState, useEffect, FormEvent, ChangeEvent, MouseEvent } from 'react';
 
 import { DateTime } from 'luxon';
 
-import { IZoo } from '../common/types';
-import validateZooObject from '../utils/validator';
+import { IZooable, IZoo } from '../common/types';
+import validateZoo from '../utils/validator';
 import Notifications from './Notifications';
 import Input from './Input';
 
@@ -47,32 +47,40 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
   }
   function addZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const zooObject: IZoo = {
-      id: zoos.length + 1, // ! Bad, will break if a zoo is deleted.
+    // const zooObject: IZoo = {
+    //   id: zoos.length + 1, // ! Bad, will break if a zoo is deleted.
+    //   name: newName,
+    //   location: newLocation, // ? Determine this from the coords?
+    //   coords: {
+    //     lat: +parseFloat(newLat).toFixed(4),
+    //     lng: +parseFloat(newLng).toFixed(4)
+    //   },
+    //   penguins: newPenguins.map((penguin) => {
+    //     return {
+    //       species: penguin.species,
+    //       count: penguin.count === '0' ? 'Unknown' : +penguin.count
+    //     };
+    //   }),
+    //   date: DateTime.now().toFormat('dd/MM/yy'),
+    // };
+    const unvalidatedZoo: IZooable = {
       name: newName,
       location: newLocation, // ? Determine this from the coords?
       coords: {
-        lat: +parseFloat(newLat).toFixed(4),
-        lng: +parseFloat(newLng).toFixed(4)
+        lat: newLat,
+        lng: newLng
       },
-      penguins: newPenguins.map((penguin) => {
-        return {
-          species: penguin.species,
-          count: penguin.count === '0' ? 'Unknown' : +penguin.count
-        };
-      }),
-      date: DateTime.now().toFormat('dd/MM/yy'),
+      penguins: newPenguins,
     };
 
-    const { validated, validations } = validateZooObject(zooObject);
+    const { validated, validations } = validateZoo(unvalidatedZoo, zoos);
     // TODO: Refactor.
     if (validated) {
-      setZoos(zoos.concat(zooObject));
+      setZoos(zoos.concat(validatedZoo));
       clearInputs();
       setNotifications(validations);
       clearNotifications();
     } else {
-      console.log(validations);
       setNotifications(validations);
       clearNotifications();
     }
