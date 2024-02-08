@@ -1,6 +1,6 @@
 import { IZooable, IZoo } from '../common/types';
 
-let validated = true;
+let valid = true;
 let validations: Array<{ message: string, style: string }> = [];
 
 const MIN_NAME_LENGTH: number = 3;
@@ -20,13 +20,13 @@ function validateName(name: string, zoos: Array<IZoo>) {
     validations.push(
       { message: 'A zoo with this name already exists.', style: 'error' }
     );
-    validated = false;
+    valid = false;
   }
   if (name.length < MIN_NAME_LENGTH || name.length > MAX_NAME_LENGTH) {
     validations.push(
       { message: 'Name must be between 3 and 80 characters.', style: 'error' }
     );
-    validated = false;
+    valid = false;
   }
 }
 
@@ -39,14 +39,14 @@ function validateLocation(location: string, zoos: Array<IZoo>) {
     validations.push(
       { message: 'A zoo with this location already exists.', style: 'error' }
     );
-    validated = false;
+    valid = false;
   }
   if (location.length < MIN_LOCATION_LENGTH ||
     location.length > MAX_LOCATION_LENGTH) {
     validations.push({
       message: 'Location must be between 3 and 100 characters.', style: 'error'
     });
-    validated = false;
+    valid = false;
   }
 }
 
@@ -56,25 +56,25 @@ function validateCoords(
     validations.push(
       { message: 'Latitude must be a valid number.', style: 'error' }
     );
-    validated = false;
+    valid = false;
   }
   if (isNaN(lng)) {
     validations.push(
       { message: 'Longitude must be a valid number.', style: 'error' }
     );
-    validated = false;
+    valid = false;
   }
   if (+lat <= MIN_LAT || +lat >= MAX_LAT) {
     validations.push(
       { message: 'Latitude must be between -90 and 90.', style: 'error' }
     );
-    validated = false;
+    valid = false;
   }
   if (+lng <= MIN_LNG || +lng >= MAX_LNG) {
     validations.push(
       { message: 'Longitude must be between -180 and 180.', style: 'error' }
     );
-    validated = false;
+    valid = false;
   }
   if (
     zoos.map((zoo) => +parseFloat(zoo.coords.lat).toFixed(2))
@@ -86,7 +86,7 @@ function validateCoords(
       message: 'A zoo with these coordinates already exists.',
       style: 'error'
     });
-    validated = false;
+    valid = false;
   }
 }
 
@@ -99,14 +99,14 @@ function validatePenguins(
   if (species.length !== speciesSet.size) {
     // ? Specify the species?
     validations.push({ message: 'Duplicated species.', style: 'error' });
-    validated = false;
+    valid = false;
   }
 
   if (!counts.every((count) => count >= 0 && count <= 250)) {
     validations.push(
       { message: 'Count must be between 0 (unknown) and 250.', style: 'error' }
     );
-    validated = false;
+    valid = false;
   }
 }
 
@@ -114,21 +114,21 @@ export default function validateZoo(
   { name, location, coords, penguins }: IZooable,
   zoos: Array<IZoo>
 ) {
-  // ? Better way to handle this (initialising then redefining `validated` &
+  // ? Better way to handle this (initialising then redefining `valid` &
   // ? `validations`)?
-  validated = true;
+  valid = true;
   validations = [];
 
   validateName(name, zoos);
   validateLocation(location, zoos);
   validateCoords(coords, zoos);
   validatePenguins(penguins);
-  if (validated) {
+  if (valid) {
     validations.push({
       message: `Successfully added ${name} to the map.`,
       style: 'success'
     });
   }
 
-  return { validated, validations };
+  return { valid, validations };
 }

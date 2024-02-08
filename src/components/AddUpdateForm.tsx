@@ -73,9 +73,9 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       penguins: newPenguins,
     };
 
-    const { validated, validations } = validateZoo(unvalidatedZoo, zoos);
+    const { valid, validations } = validateZoo(unvalidatedZoo, zoos);
     // TODO: Refactor.
-    if (validated) {
+    if (valid) {
       setZoos(zoos.concat(validatedZoo));
       clearInputs();
       setNotifications(validations);
