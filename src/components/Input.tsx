@@ -4,7 +4,9 @@ type InputProps = {
   name: string,
   text: string,
   value: string | undefined,
-  onChange(event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>): void,
+  onChange(
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+  ): void,
 };
 
 export default function Input({ name, text, value, onChange }: InputProps) {

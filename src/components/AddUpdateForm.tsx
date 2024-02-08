@@ -6,6 +6,7 @@ import { IZooable, IZoo } from '../common/types';
 import validateZoo from '../utils/validator';
 import Notifications from './Notifications';
 import Input from './Input';
+import PenguinsInputs from './PenguinsInputs';
 
 type AddUpdateFormProps = {
   zoos: Array<IZoo>,
@@ -109,7 +110,7 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     setNewPenguins(updatedPenguins);
   }
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>,
+  function handleNumberChange(event: ChangeEvent<HTMLInputElement>,
                              id: number) {
     const updatedPenguins = newPenguins.map((penguin) =>
       penguin.id === id ? { ...penguin, count: event.target.value } : penguin
@@ -137,28 +138,6 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     }
   }
 
-  const allSpecies: Array<string> = [
-    'King Penguins',
-    'Emperor Penguins',
-    'Adélie Penguins',
-    'Chinstrap Penguins',
-    'Gentoo Penguins',
-    'Little Penguins',
-    'Magellanic Penguins',
-    'Humboldt Penguins',
-    'Galápagos Penguins',
-    'African Penguins',
-    'Yellow-eyed Penguins',
-    'Fiordland Penguins',
-    'Snares Penguins',
-    'Erect-crested Penguins',
-    'Southern Rockhopper Penguins',
-    'Northern Rockhopper Penguins',
-    'Royal Penguins',
-    'Macaroni Penguins'
-  ];
-
-  // TODO: Refactor.
   return (
     <>
       <h2>Add / Update Form</h2>
@@ -176,23 +155,10 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
         <Input name={'lng'} text={''} value={newLng}
           onChange={handleLngChange} />
         <br />
-        {/* ? Doesn't `<label>` really need a `htmlFor` attribute? */}
-        <label>Penguins: </label>
-        {newPenguins.map(({ id }) => (
-          <div key={id}>
-            <select onChange={(event) => handleSelectChange(event, id)}>
-              {allSpecies.map((species) =>
-                <option key={species} value={species}>{species}</option>)}
-            </select>
-            <input type="number"
-              onChange={(event) => handleInputChange(event, id)} required />
-            <button onClick={(event) => addField(event)}>+</button>
-            {newPenguins.length > 1 ?
-              <button onClick={(event) => deleteField(event, id)}>
-                -
-              </button> : ''}
-          </div>
-        ))}
+        <PenguinsInputs newPenguins={newPenguins}
+          handleSelectChange={handleSelectChange}
+          handleNumberChange={handleNumberChange} addField={addField}
+          deleteField={deleteField} />
         <button type="submit">Save</button>
       </form>
     </>
