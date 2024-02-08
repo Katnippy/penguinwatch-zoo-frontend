@@ -91,9 +91,9 @@ function validateCoords(
 }
 
 function validatePenguins(
-  penguins: Array<{ species: string, count: number}>) {
+  penguins: Array<{ id: number, species: string, count: string }>) {
   const species = penguins.map((penguin) => penguin.species);
-  const counts = penguins.map((penguin) => penguin.count);
+  const counts = penguins.map((penguin) => +penguin.count);
 
   const speciesSet = new Set(species);
   if (species.length !== speciesSet.size) {
