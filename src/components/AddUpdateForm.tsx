@@ -47,22 +47,6 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
   }
   function addZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // const zooObject: IZoo = {
-    //   id: zoos.length + 1, // ! Bad, will break if a zoo is deleted.
-    //   name: newName,
-    //   location: newLocation, // ? Determine this from the coords?
-    //   coords: {
-    //     lat: +parseFloat(newLat).toFixed(4),
-    //     lng: +parseFloat(newLng).toFixed(4)
-    //   },
-    //   penguins: newPenguins.map((penguin) => {
-    //     return {
-    //       species: penguin.species,
-    //       count: penguin.count === '0' ? 'Unknown' : +penguin.count
-    //     };
-    //   }),
-    //   date: DateTime.now().toFormat('dd/MM/yy'),
-    // };
     const unvalidatedZoo: IZooable = {
       name: newName,
       location: newLocation, // ? Determine this from the coords?
@@ -72,11 +56,26 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       },
       penguins: newPenguins,
     };
-
     const { valid, validations } = validateZoo(unvalidatedZoo, zoos);
     // TODO: Refactor.
     if (valid) {
-      setZoos(zoos.concat(validatedZoo));
+      const zoo: IZoo = {
+        id: zoos.length + 1, // ! Bad, will break if a zoo is deleted.
+        name: newName,
+        location: newLocation, // ? Determine this from the coords?
+        coords: {
+          lat: +parseFloat(newLat).toFixed(4),
+          lng: +parseFloat(newLng).toFixed(4)
+        },
+        penguins: newPenguins.map((penguin) => {
+          return {
+            species: penguin.species,
+            count: penguin.count === '0' ? 'Unknown' : +penguin.count
+          };
+        }),
+        date: DateTime.now().toFormat('dd/MM/yy'),
+      };
+      setZoos(zoos.concat(zoo));
       clearInputs();
       setNotifications(validations);
       clearNotifications();
