@@ -45,6 +45,7 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
     setNewLng('');
     setNewPenguins([]);
   }
+  // ? Refactor?
   function addZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const unvalidatedZoo: IZooable = {
@@ -57,10 +58,9 @@ export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
       penguins: newPenguins,
     };
     const { valid, validations } = validateZoo(unvalidatedZoo, zoos);
-    // TODO: Refactor.
     if (valid) {
       const zoo: IZoo = {
-        id: zoos.length + 1, // ! Bad, will break if a zoo is deleted.
+        id: +(zoos.at(-1).id) + 1,
         name: newName,
         location: newLocation, // ? Determine this from the coords?
         coords: {
