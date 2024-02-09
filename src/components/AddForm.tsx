@@ -13,10 +13,10 @@ type AddFormProps = ChangeZooProps;
 export default function AddForm({ zoos, setZoos }: AddFormProps) {
   const [notifications, setNotifications] =
     useState<Array<{ message: string, style: string }>>([]);
-  const [newName, setNewName] = useState<string>('');
-  const [newLocation, setNewLocation] = useState<string>('');
-  const [newLat, setNewLat] = useState<string>(''); // ? Combine as coords?
-  const [newLng, setNewLng] = useState<string>('');
+  const [newName, setNewName] = useState('');
+  const [newLocation, setNewLocation] = useState('');
+  const [newLat, setNewLat] = useState(''); // ? Combine as coords?
+  const [newLng, setNewLng] = useState('');
   const [newPenguins, setNewPenguins] =
     useState<Array<{ id: number, species: string, count: string }>>([]);
 
@@ -137,7 +137,6 @@ export default function AddForm({ zoos, setZoos }: AddFormProps) {
 
   return (
     <>
-      <h2>Add / Update Form</h2>
       {/* ? Is there a better way to handle the conditional rendering here? */}
       {notifications ? <Notifications notifications={notifications} /> : ''}
       <form onSubmit={addZoo}>
