@@ -2,18 +2,15 @@ import { useState, useEffect, FormEvent, ChangeEvent, MouseEvent } from 'react';
 
 import { DateTime } from 'luxon';
 
-import { IZooable, IZoo } from '../common/types';
+import { IZooable, IZoo, ChangeZooProps } from '../common/types';
 import validateZoo from '../utils/validator';
 import Notifications from './Notifications';
 import Input from './Input';
 import PenguinsInputs from './PenguinsInputs';
 
-type AddUpdateFormProps = {
-  zoos: Array<IZoo>,
-  setZoos: React.Dispatch<React.SetStateAction<IZoo[]>>,
-};
+type AddFormProps = ChangeZooProps;
 
-export default function AddUpdateForm({ zoos, setZoos }: AddUpdateFormProps) {
+export default function AddForm({ zoos, setZoos }: AddFormProps) {
   const [notifications, setNotifications] =
     useState<Array<{ message: string, style: string }>>([]);
   const [newName, setNewName] = useState<string>('');

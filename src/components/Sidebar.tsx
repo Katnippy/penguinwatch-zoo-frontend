@@ -1,16 +1,15 @@
-import { IZoo } from '../common/types';
-import AddUpdateForm from "./AddUpdateForm";
+import { ChangeZooProps } from '../common/types';
+import AddForm from './AddForm';
+import UpdateForm from './UpdateForm';
 
-type SidebarProps = {
-  zoos: Array<IZoo>,
-  setZoos: React.Dispatch<React.SetStateAction<IZoo[]>>,
-};
+type SidebarProps = ChangeZooProps;
 
 export default function Sidebar({ zoos, setZoos }: SidebarProps) {
   return (
     <div id="sidebar">
       <h1>Sidebar</h1>
-      <AddUpdateForm zoos={zoos} setZoos={setZoos}/>
+      <AddForm zoos={zoos} setZoos={setZoos}/>
+      <UpdateForm />
     </div>
   );
 }
