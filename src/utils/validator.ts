@@ -93,19 +93,10 @@ function validateCoords(
 function validatePenguins(
   penguins: Array<{ id: number, species: string, count: string }>) {
   const species = penguins.map((penguin) => penguin.species);
-  const counts = penguins.map((penguin) => +penguin.count);
-
   const speciesSet = new Set(species);
   if (species.length !== speciesSet.size) {
     // ? Specify the species?
     validations.push({ message: 'Duplicated species.', style: 'error' });
-    valid = false;
-  }
-
-  if (!counts.every((count) => count >= 0 && count <= 250)) {
-    validations.push(
-      { message: 'Count must be between 0 (unknown) and 250.', style: 'error' }
-    );
     valid = false;
   }
 }
