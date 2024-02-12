@@ -12,7 +12,7 @@ type InputProps = {
 export default function Input({ name, text, value, onChange }: InputProps) {
   return (
     <>
-      <label htmlFor={name}>{text} </label>
+      <label htmlFor={name}>{text}</label>
       <input id={name} value={value} onChange={onChange} required />
     </>
   );

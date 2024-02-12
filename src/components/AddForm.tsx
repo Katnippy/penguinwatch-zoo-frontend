@@ -67,6 +67,7 @@ export default function AddForm({ zoos, setZoos }: AddFormProps) {
         },
         penguins: newPenguins.map((penguin) => {
           return {
+            id: penguin.id,
             species: penguin.species,
             count: penguin.count === '0' ? 'Unknown' : +penguin.count
           };

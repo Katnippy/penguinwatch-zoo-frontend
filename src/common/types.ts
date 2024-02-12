@@ -3,7 +3,7 @@ interface IZoo {
   name: string,
   location: string,
   coords: { lat: number, lng: number },
-  penguins: Array<{ species: string, count: number | string }>,
+  penguins: Array<{ id: number, species: string, count: number | string }>,
   date: string,
 };
 

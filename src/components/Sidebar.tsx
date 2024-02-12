@@ -23,7 +23,7 @@ export default function Sidebar({ zoos, setZoos }: SidebarProps) {
         {addOrUpdate === 'add' ? 'Update' : 'Add'}
       </button>
       {addOrUpdate === 'add' ? <AddForm zoos={zoos} setZoos={setZoos}/>
-        : <UpdateForm />}
+        : <UpdateForm zoos={zoos} setZoos={setZoos} />}
     </div>
   );
 }
