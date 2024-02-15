@@ -8,6 +8,7 @@ type SidebarProps = ChangeZooProps;
 
 export default function Sidebar({ zoos, setZoos }: SidebarProps) {
   const [addOrUpdate, setAddOrUpdate] = useState('add');
+
   function toggleAddUpdate() {
     if (addOrUpdate === 'add') {
       setAddOrUpdate('update');

@@ -1,25 +1,46 @@
 import { useState, FormEvent, ChangeEvent, MouseEvent } from 'react';
 
+import { IZoo, IZooable, ChangeZooProps } from '../common/types';
+import validateZoo from '../utils/validator';
 import zooService from '../services/zoos';
-import { IZoo, ChangeZooProps } from '../common/types';
+import Notifications from './Notifications';
 
 type UpdateFormProps = ChangeZooProps;
 
 export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
+  const [notifications, setNotifications] =
+    useState<Array<{ message: string, style: string }>>([]);
   // ? Leave unselected by default? Then clear on update?
-  const [selectedZoo, setSelectedZoo] = useState<IZoo>(zoos.at(0)!);
+  const [selectedZoo, setSelectedZoo] = useState<IZoo | IZooable>(zoos.at(0)!);
+
+  function clearNotifications() {
+    setTimeout(() => {
+      setNotifications([]);
+    }, 5000);
+  }
 
   async function updateZoo(event: FormEvent<HTMLFormElement>) {
-    // ! Normalise and validate zoo like in AddForm.
     event.preventDefault();
-    try {
-      // TODO: Change date of `selectedZoo`.
-      const updatedZoo = await zooService.update(selectedZoo.id, selectedZoo);
-      setZoos(zoos.map((zoo) => zoo.id !== selectedZoo.id ? zoo : updatedZoo));
-      // TODO: Notification
-    } catch (e) {
-      console.error('Error updating data: ', e);
-      // TODO: Notification
+    const { valid, validations } =
+      validateZoo(selectedZoo as IZooable, zoos, false);
+    // TODO: Normalise and validate zoo like in AddForm.
+    if (valid) {
+      try {
+        // TODO: Change date of `selectedZoo`.
+        const updatedZoo =
+          await zooService.update(selectedZoo.id, selectedZoo);
+        setZoos(
+          zoos.map((zoo) => zoo.id !== selectedZoo.id ? zoo : updatedZoo));
+        // TODO: Notification
+        setNotifications(validations);
+        clearNotifications();
+      } catch (e) {
+        console.error('Error updating data: ', e);
+        // TODO: Notification
+      }
+    } else {
+      setNotifications(validations);
+      clearNotifications();
     }
   }
 
@@ -89,8 +110,11 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
   }
 
   // TODO: Refactor.
+  // TODO: Include `allSpecies`.
+  // ! It's possible to delete all penguins fields right now.
   return (
     <>
+      {notifications ? <Notifications notifications={notifications} /> : ''}
       <form onSubmit={(event) => void updateZoo(event)}>
         <label htmlFor="zoo">Zoo: </label>
         <select onChange={handleZooChange}>
