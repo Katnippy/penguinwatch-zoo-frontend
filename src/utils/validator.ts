@@ -58,7 +58,7 @@ function validateCoords(
   }
 }
 function validatePenguins(
-  penguins: Array<{ id: number, species: string, count: string }>) {
+  penguins: Array<{ id: number, species: string, count: number | string }>) {
   const species = penguins.map((penguin) => penguin.species);
   const speciesSet = new Set(species);
   if (species.length !== speciesSet.size) {
@@ -73,6 +73,7 @@ function validateUniqueness(
   name: string,
   location: string,
   coords: { lat: string | number, lng: string | number },
+  penguins: Array<{ id: number, species: string, count: number | string }>,
   checkSelf: boolean,
   zoos: Array<IZoo>,
   id?: number
@@ -90,6 +91,18 @@ function validateUniqueness(
       +parseFloat(zoo.coords.lat).toFixed(2) === +parseFloat(lat).toFixed(2))
       && filteredZoos.some((zoo) =>
       +parseFloat(zoo.coords.lng).toFixed(2) === +parseFloat(lng).toFixed(2));
+  }
+
+  function isUnchanged(
+    updatedName: string,
+    updatedLocation: string,
+    updatedCoords: { lat: string | number, lng: string | number },
+    updatedPenguins: Array<{ id: number, species: string, count: string }>
+  ) {
+    return zoos.find(({ name, location, coords, penguins }) => {
+      return name === updatedName && location === updatedLocation &&
+        coords === updatedCoords && penguins === updatedPenguins;
+    });
   }
 
   if (isDuplicate('name', name)) {
@@ -112,9 +125,18 @@ function validateUniqueness(
     });
     valid = false;
   }
+  if (isUnchanged(name, location, coords, penguins)) {
+    // ? Not sure about this message.
+    validations.push({
+      message: 'Error when trying to update a zoo without changing it first.',
+      style: 'error'
+    });
+    valid = false;
+  }
+
 }
 export default function validateZoo(
-  { id, name, location, coords, penguins }: IZooable,
+  { id, name, location, coords, penguins }: IZooable | IZoo,
   zoos: Array<IZoo>,
   checkSelf = true,
 ) {
@@ -127,7 +149,7 @@ export default function validateZoo(
   validateLocation(location);
   validateCoords(coords);
   validatePenguins(penguins);
-  validateUniqueness(name, location, coords, checkSelf, zoos, id);
+  validateUniqueness(name, location, coords, penguins, checkSelf, zoos, id);
 
   if (valid && checkSelf) {
     validations.push({
