@@ -128,10 +128,15 @@ export default function validateZoo(
   validateCoords(coords);
   validatePenguins(penguins);
   validateUniqueness(name, location, coords, checkSelf, zoos, id);
-  // ? Another message for update?
-  if (valid) {
+
+  if (valid && checkSelf) {
     validations.push({
       message: `Successfully added ${name} to the map.`,
+      style: 'success'
+    });
+  } else if (valid && !checkSelf) {
+    validations.push({
+      message: `Successfully updated ${name}.`,
       style: 'success'
     });
   }
