@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { IZooable, IZoo } from '../common/types';
+import { IZoo } from '../common/types';
 
 const baseUrl = 'http://localhost:3001/zoos';
 
-async function create(newObject: IZooable) {
+async function create(newObject: IZoo) {
   const res = await axios.post<IZoo>(baseUrl, newObject);
   return res.data; // ? Correctly typed?
 }

@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 
 import { IZooable, IZoo, ChangeZooProps } from '../common/types';
 import validateZoo from '../utils/validator';
+import zooService from '../services/zoos';
 import Notifications from './Notifications';
 import Input from './Input';
 import PenguinsInputs from './PenguinsInputs';
@@ -44,7 +45,7 @@ export default function AddForm({ zoos, setZoos }: AddFormProps) {
     setNewPenguins([]);
   }
   // ? Refactor?
-  function addZoo(event: FormEvent<HTMLFormElement>) {
+  async function addZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const unvalidatedZoo: IZooable = {
       name: newName,
@@ -74,7 +75,8 @@ export default function AddForm({ zoos, setZoos }: AddFormProps) {
         }),
         date: DateTime.now().toFormat('dd/MM/yy'),
       };
-      setZoos(zoos.concat(zoo));
+      const updatedZoo = await zooService.create(zoo);
+      setZoos(zoos.concat(updatedZoo));
       clearInputs();
       setNotifications(validations);
       clearNotifications();

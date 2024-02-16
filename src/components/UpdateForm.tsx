@@ -43,8 +43,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
           }),
           date: DateTime.now().toFormat('dd/MM/yy'),
         };
-        const updatedZoo =
-          await zooService.update(selectedZoo.id, zoo);
+        const updatedZoo = await zooService.update(selectedZoo.id, zoo);
         setZoos(
           zoos.map((zoo) => zoo.id !== selectedZoo.id ? zoo : updatedZoo));
         setNotifications(validations);
