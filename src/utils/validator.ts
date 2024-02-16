@@ -1,4 +1,4 @@
-import { IZooable, IZoo } from '../common/types';
+import { IZoo, IZooable, IZooUpdateable } from '../common/types';
 
 let valid = true;
 let validations: Array<{ message: string, style: string }> = [];
@@ -136,7 +136,8 @@ function validateUniqueness(
 
 }
 export default function validateZoo(
-  { id, name, location, coords, penguins }: IZooable | IZoo,
+  { id = undefined, name, location, coords, penguins }:
+    IZooable | IZooUpdateable,
   zoos: Array<IZoo>,
   checkSelf = true,
 ) {

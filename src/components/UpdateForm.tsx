@@ -2,7 +2,7 @@ import { useState, FormEvent, ChangeEvent, MouseEvent } from 'react';
 
 import { DateTime } from 'luxon';
 
-import { IZoo, IZooable, ChangeZooProps } from '../common/types';
+import { IZoo, IZooUpdateable, ChangeZooProps } from '../common/types';
 import validateZoo from '../utils/validator';
 import zooService from '../services/zoos';
 import Notifications from './Notifications';
@@ -13,7 +13,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
   const [notifications, setNotifications] =
     useState<Array<{ message: string, style: string }>>([]);
   // ? Leave unselected by default? Then clear on update?
-  const [selectedZoo, setSelectedZoo] = useState<IZoo | IZooable>(zoos.at(0)!);
+  const [selectedZoo, setSelectedZoo] = useState<IZooUpdateable>(zoos.at(0)!);
 
   function clearNotifications() {
     setTimeout(() => {
@@ -23,7 +23,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
   async function updateZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const { valid, validations } =
-      validateZoo(selectedZoo as IZooable, zoos, false);
+      validateZoo(selectedZoo, zoos, false);
     if (valid) {
       try {
         const zoo: IZoo = {
@@ -51,7 +51,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
         clearNotifications();
       } catch (e) {
         console.error('Error updating data: ', e);
-        // TODO: Notification
+        // ? Notification?
       }
     } else {
       setNotifications(validations);
