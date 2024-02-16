@@ -125,7 +125,6 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
 
   // TODO: Refactor.
   // TODO: Include `allSpecies`.
-  // ! It's possible to delete all penguins fields right now.
   return (
     <>
       {notifications ? <Notifications notifications={notifications} /> : ''}
@@ -160,7 +159,10 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
               onChange={(event) => handleNumberChange(event, id)} min="0"
               max="250" required />
             <button onClick={addField}>+</button>
-            <button onClick={(event) => deleteField(event, id)}>-</button>
+            {selectedZoo.penguins.length > 1
+              ? <button onClick={(event) => deleteField(event, id)}>-</button>
+              : ''
+            }
           </div>
         ))}
         <button type="submit">Save</button>
