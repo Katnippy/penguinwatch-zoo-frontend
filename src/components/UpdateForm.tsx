@@ -1,5 +1,7 @@
 import { useState, FormEvent, ChangeEvent, MouseEvent } from 'react';
 
+import { DateTime } from 'luxon';
+
 import { IZoo, IZooable, ChangeZooProps } from '../common/types';
 import validateZoo from '../utils/validator';
 import zooService from '../services/zoos';
@@ -18,20 +20,33 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
       setNotifications([]);
     }, 5000);
   }
-
   async function updateZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const { valid, validations } =
       validateZoo(selectedZoo as IZooable, zoos, false);
-    // TODO: Normalise and validate zoo like in AddForm.
     if (valid) {
       try {
-        // TODO: Change date of `selectedZoo`.
+        const zoo: IZoo = {
+          id: selectedZoo.id,
+          name: selectedZoo.name,
+          location: selectedZoo.location, // ? Determine this from the coords?
+          coords: {
+            lat: +parseFloat(selectedZoo.coords.lat).toFixed(4),
+            lng: +parseFloat(selectedZoo.coords.lng).toFixed(4)
+          },
+          penguins: selectedZoo.penguins.map((penguin) => {
+            return {
+              id: penguin.id,
+              species: penguin.species,
+              count: penguin.count === '0' || null ? 'Unknown' : +penguin.count
+            };
+          }),
+          date: DateTime.now().toFormat('dd/MM/yy'),
+        };
         const updatedZoo =
-          await zooService.update(selectedZoo.id, selectedZoo);
+          await zooService.update(selectedZoo.id, zoo);
         setZoos(
           zoos.map((zoo) => zoo.id !== selectedZoo.id ? zoo : updatedZoo));
-        // TODO: Notification
         setNotifications(validations);
         clearNotifications();
       } catch (e) {
