@@ -142,7 +142,7 @@ export default function AddForm({ zoos, setZoos }: AddFormProps) {
     <>
       {/* ? Is there a better way to handle the conditional rendering here? */}
       {notifications ? <Notifications notifications={notifications} /> : ''}
-      <form onSubmit={addZoo}>
+      <form onSubmit={(event) => void addZoo(event)}>
         <Input name={'name'} text={'Name: '} value={newName}
           onChange={handleNameChange} />
         <br />
