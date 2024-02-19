@@ -3,7 +3,8 @@ import { ChangeEvent } from 'react';
 type InputProps = {
   name: string,
   text: string,
-  value: string | undefined,
+  // ? Should we accept undefined since input is required anyway?
+  value: string | number | undefined,
   onChange(
     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
   ): void,

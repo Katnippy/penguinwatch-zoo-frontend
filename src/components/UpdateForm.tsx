@@ -1,4 +1,4 @@
-import { useState, FormEvent, ChangeEvent, MouseEvent } from 'react';
+import { useState, useEffect, FormEvent, ChangeEvent, MouseEvent } from 'react';
 
 import { DateTime } from 'luxon';
 
@@ -6,6 +6,7 @@ import { IZoo, IZooUpdateable, ChangeZooProps } from '../common/types';
 import validateZoo from '../utils/validator';
 import zooService from '../services/zoos';
 import Notifications from './Notifications';
+import Input from './Input';
 
 type UpdateFormProps = ChangeZooProps;
 
@@ -38,7 +39,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
             return {
               id: penguin.id,
               species: penguin.species,
-              count: penguin.count === '0' || null ? 'Unknown' : +penguin.count
+              count: penguin.count === '0' ? 'Unknown' : +penguin.count
             };
           }),
           date: DateTime.now().toFormat('dd/MM/yy'),
@@ -123,8 +124,27 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
     }
   }
 
-  // TODO: Refactor.
-  // TODO: Include `allSpecies`.
+  const allSpecies: Array<string> = [
+    'King Penguins',
+    'Emperor Penguins',
+    'Adélie Penguins',
+    'Chinstrap Penguins',
+    'Gentoo Penguins',
+    'Little Penguins',
+    'Magellanic Penguins',
+    'Humboldt Penguins',
+    'Galápagos Penguins',
+    'African Penguins',
+    'Yellow-eyed Penguins',
+    'Fiordland Penguins',
+    'Snares Penguins',
+    'Erect-crested Penguins',
+    'Southern Rockhopper Penguins',
+    'Northern Rockhopper Penguins',
+    'Royal Penguins',
+    'Macaroni Penguins'
+  ];
+
   return (
     <>
       {notifications ? <Notifications notifications={notifications} /> : ''}
@@ -135,27 +155,28 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
             <option key={zoo.name} value={zoo.id}>{zoo.name}</option>)}
         </select>
         <br />
-        <label htmlFor="name">Name: </label>
-        <input id="name" value={selectedZoo.name} onChange={handleNameChange}
-          required />
+        <Input name={'name'} text={'Name: '} value={selectedZoo.name}
+          onChange={handleNameChange} />
         <br />
-        <label htmlFor="location">Location: </label>
-        <input id="location" value={selectedZoo.location}
-          onChange={handleLocationChange} required />
+        <Input name={'location'} text={'Location: '}
+          value={selectedZoo.location} onChange={handleLocationChange} />
         <br />
-        <label htmlFor="lat">Coordinates: </label>
-        <input id="lat" value={selectedZoo.coords.lat}
-          onChange={handleLatChange} required />
-        <input id="lng" value={selectedZoo.coords.lng}
-          onChange={handleLngChange} required />
+        <Input name={'lat'} text={'Coordinates: '}
+          value={selectedZoo.coords.lat} onChange={handleLatChange} />
+        <Input name={'lng'} text={''} value={selectedZoo.coords.lng}
+          onChange={handleLngChange} />
         <br />
-        <label>Penguins: </label>
         {selectedZoo.penguins.map(({ id, species, count }) => (
           <div key={id}>
-            <select onChange={(event) => handleSelectChange(event, id)}>
-              <option key={id} value={species}>{species}</option>
+            <select value={species}
+              onChange={(event) => handleSelectChange(event, id)}>
+                {allSpecies.map((asSpecies) =>
+                  <option key={asSpecies} value={asSpecies}>
+                    {asSpecies}
+                  </option>
+                )}
             </select>
-            <input type="number" value={count === 'Unknown' ? 0 : count}
+            <input type="number" value={count}
               onChange={(event) => handleNumberChange(event, id)} min="0"
               max="250" required />
             <button onClick={addField}>+</button>

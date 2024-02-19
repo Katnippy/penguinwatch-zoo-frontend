@@ -154,7 +154,7 @@ export default function AddForm({ zoos, setZoos }: AddFormProps) {
         <Input name={'lng'} text={''} value={newLng}
           onChange={handleLngChange} />
         <br />
-        <PenguinsInputs newPenguins={newPenguins}
+        <PenguinsInputs penguins={newPenguins}
           handleSelectChange={handleSelectChange}
           handleNumberChange={handleNumberChange} addField={addField}
           deleteField={deleteField} />
