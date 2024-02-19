@@ -1,8 +1,9 @@
 import { ChangeEvent } from 'react';
 
-type SelectInputProps = {
+type PenguinsSelectInputProps = {
   handleSelectChange(event: ChangeEvent<HTMLSelectElement>, id: number): void,
   id: number,
+  species?: string,
 };
 
 const allSpecies: Array<string> = [
@@ -26,12 +27,12 @@ const allSpecies: Array<string> = [
   'Macaroni Penguins'
 ];
 
-export default function SelectInput({ handleSelectChange, id }
-  : SelectInputProps) {
+export default function PenguinsSelectInput({ handleSelectChange, id, species }
+  : PenguinsSelectInputProps) {
   return (
-    <select onChange={(event) => handleSelectChange(event, id)}>
-      {allSpecies.map((species) =>
-        <option key={species} value={species}>{species}</option>)}
+    <select value={species} onChange={(event) => handleSelectChange(event, id)}>
+      {allSpecies.map((asSpecies) =>
+        <option key={asSpecies} value={asSpecies}>{asSpecies}</option>)}
     </select>
   );
 }

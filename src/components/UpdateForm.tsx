@@ -6,7 +6,9 @@ import { IZoo, IZooUpdateable, ChangeZooProps } from '../common/types';
 import validateZoo from '../utils/validator';
 import zooService from '../services/zoos';
 import Notifications from './Notifications';
+import ZooSelectInput from './ZooSelectInput';
 import Input from './Input';
+import PenguinsInputs from './PenguinsInputs';
 
 type UpdateFormProps = ChangeZooProps;
 
@@ -17,6 +19,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
   const [selectedZoo, setSelectedZoo] =
     useState<IZooUpdateable>({ ...zoos.at(0)! });
 
+  // TODO: Explain.
   useEffect(() => {
     const cleanedPenguins = selectedZoo.penguins.map((penguin) => {
      if (penguin.count === 'Unknown') {
@@ -140,36 +143,12 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
     }
   }
 
-  const allSpecies: Array<string> = [
-    'King Penguins',
-    'Emperor Penguins',
-    'Adélie Penguins',
-    'Chinstrap Penguins',
-    'Gentoo Penguins',
-    'Little Penguins',
-    'Magellanic Penguins',
-    'Humboldt Penguins',
-    'Galápagos Penguins',
-    'African Penguins',
-    'Yellow-eyed Penguins',
-    'Fiordland Penguins',
-    'Snares Penguins',
-    'Erect-crested Penguins',
-    'Southern Rockhopper Penguins',
-    'Northern Rockhopper Penguins',
-    'Royal Penguins',
-    'Macaroni Penguins'
-  ];
-
   return (
     <>
       {notifications ? <Notifications notifications={notifications} /> : ''}
       <form onSubmit={(event) => void updateZoo(event)}>
-        <label htmlFor="zoo">Zoo: </label>
-        <select onChange={handleZooChange}>
-          {zoos.map((zoo) =>
-            <option key={zoo.name} value={zoo.id}>{zoo.name}</option>)}
-        </select>
+        <ZooSelectInput name={'zoo'} text={'Zoo: '} onChange={handleZooChange}
+          zoos={zoos} />
         <br />
         <Input name={'name'} text={'Name: '} value={selectedZoo.name}
           onChange={handleNameChange} />
@@ -182,26 +161,10 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
         <Input name={'lng'} text={''} value={selectedZoo.coords.lng}
           onChange={handleLngChange} />
         <br />
-        {selectedZoo.penguins.map(({ id, species, count }) => (
-          <div key={id}>
-            <select value={species}
-              onChange={(event) => handleSelectChange(event, id)}>
-                {allSpecies.map((asSpecies) =>
-                  <option key={asSpecies} value={asSpecies}>
-                    {asSpecies}
-                  </option>
-                )}
-            </select>
-            <input type="number" value={count}
-              onChange={(event) => handleNumberChange(event, id)} min="0"
-              max="250" required />
-            <button onClick={addField}>+</button>
-            {selectedZoo.penguins.length > 1
-              ? <button onClick={(event) => deleteField(event, id)}>-</button>
-              : ''
-            }
-          </div>
-        ))}
+        <PenguinsInputs penguins={selectedZoo.penguins}
+          handleSelectChange={handleSelectChange}
+          handleNumberChange={handleNumberChange} addField={addField}
+          deleteField={deleteField} isUpdating={true} />
         <button type="submit">Save</button>
       </form>
     </>
