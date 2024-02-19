@@ -66,6 +66,16 @@ function validatePenguins(
     validations.push({ message: 'Duplicated species.', style: 'error' });
     valid = false;
   }
+
+  if (penguins.some((penguin) =>
+        penguin.count.toString().startsWith('0') &&
+        penguin.count.toString() !== '0' )
+  ) {
+    validations.push(
+      { message: 'Penguin counts must be between 0 and 250.', style: 'error' }
+    );
+    valid = false;
+  }
 }
 // TODO: Check that the user isn't trying to update a zoo with the exact same
 // TODO: inputs.
