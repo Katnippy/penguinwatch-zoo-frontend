@@ -13,7 +13,8 @@ async function read() {
   return res.data;
 }
 
-async function update(id: number, zoo: IZoo) {
+// ? Does `id` need to be converted to a number first?
+async function update(id: string, zoo: IZoo) {
   const res = await axios.put<IZoo>(`${baseUrl}/${id}`, zoo);
   return res.data;
 }

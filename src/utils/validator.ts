@@ -86,7 +86,7 @@ function validateUniqueness(
   penguins: Array<{ id: number, species: string, count: number | string }>,
   checkSelf: boolean,
   zoos: Array<IZoo>,
-  id?: number
+  id?: string
 ) {
   const filteredZoos = checkSelf ? zoos : zoos.filter((zoo) => zoo.id !== id);
 
@@ -143,7 +143,6 @@ function validateUniqueness(
     });
     valid = false;
   }
-
 }
 export default function validateZoo(
   { id = undefined, name, location, coords, penguins }:

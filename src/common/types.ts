@@ -6,7 +6,7 @@ interface IZooable {
 }
 
 interface IZooUpdateable {
-  id: number,
+  id: string,
   name: string,
   location: string,
   coords: { lat: number | string, lng: number | string },
@@ -14,7 +14,7 @@ interface IZooUpdateable {
 }
 
 interface IZoo {
-  id: number,
+  id: string,
   name: string,
   location: string,
   coords: { lat: number, lng: number },

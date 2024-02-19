@@ -59,7 +59,7 @@ export default function AddForm({ zoos, setZoos }: AddFormProps) {
     const { valid, validations } = validateZoo(unvalidatedZoo, zoos);
     if (valid) {
       const zoo: IZoo = {
-        id: +(zoos.at(-1).id) + 1,
+        id: (+(zoos.at(-1).id) + 1).toString(),
         name: newName,
         location: newLocation, // ? Determine this from the coords?
         coords: {
