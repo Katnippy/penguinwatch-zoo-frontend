@@ -14,7 +14,23 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
   const [notifications, setNotifications] =
     useState<Array<{ message: string, style: string }>>([]);
   // ? Leave unselected by default? Then clear on update?
-  const [selectedZoo, setSelectedZoo] = useState<IZooUpdateable>(zoos.at(0)!);
+  const [selectedZoo, setSelectedZoo] =
+    useState<IZooUpdateable>({ ...zoos.at(0)! });
+
+  useEffect(() => {
+    const cleanedPenguins = selectedZoo.penguins.map((penguin) => {
+     if (penguin.count === 'Unknown') {
+       return { ...penguin, count: 0 };
+     } else {
+       return penguin;
+     }
+    });
+    if (JSON.stringify(cleanedPenguins) !==
+        JSON.stringify(selectedZoo.penguins)
+    ) {
+      setSelectedZoo({ ...selectedZoo, penguins: cleanedPenguins });
+    }
+  }, [selectedZoo]);
 
   function clearNotifications() {
     setTimeout(() => {
@@ -39,7 +55,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
             return {
               id: penguin.id,
               species: penguin.species,
-              count: penguin.count === '0' ? 'Unknown' : +penguin.count
+              count: +penguin.count === 0 ? 'Unknown' : +penguin.count
             };
           }),
           date: DateTime.now().toFormat('dd/MM/yy'),
