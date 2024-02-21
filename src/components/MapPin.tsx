@@ -32,6 +32,11 @@ export default function MapPin({ zoo }: MapPinProps) {
                 </li>
               ))}
             </ul>
+            {zoo.flagged ?
+              <b>
+                ⚠️ Flagged for deletion - this zoo may not have any penguins.
+              </b>
+              : ''}
           </li>
           <p>Correct as of {zoo.date}</p>
         </InfoWindow>

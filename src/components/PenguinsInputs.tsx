@@ -29,7 +29,7 @@ export default function PenguinsInputs({
           <PenguinsNumberInput count={isUpdating ? count : undefined}
             handleNumberChange={handleNumberChange} id={id} />
           <PenguinsInputsButton onClick={addField} text={'+'} />
-          {penguins.length > 1 ?
+          {penguins.length > 1 || isUpdating ?
             <PenguinsInputsButton onClick={deleteField} id={id} text={'-'} />
           : ''}
         </div>

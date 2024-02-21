@@ -32,6 +32,7 @@ export default function FilterForm({ zoos, setShownZoos }: FilterFormProps) {
         (zoo.penguins.map((penguin) => penguin.species).includes(cSpecies)))));
   }
 
+  // ? Validate these?
   function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
     setFilteredName(event.target.value);
   }
@@ -50,6 +51,7 @@ export default function FilterForm({ zoos, setShownZoos }: FilterFormProps) {
     }
   }
 
+  // TODO: Add option to filter out flagged zoos.
   return (
     <>
       <form onSubmit={filterZoos}>
@@ -67,11 +69,12 @@ export default function FilterForm({ zoos, setShownZoos }: FilterFormProps) {
         <br /> */}
         {/* {showWithinCoords ? <Fieldset name={'coords'} /> : '' } */}
         <Fieldset name={'species'} onChange={handleSpeciesChange} />
-        {/* <br />
-        <label htmlFor="num-species">How many species?: </label>
-        <input type="number" id="num-species" />
         <br />
-        <label htmlFor="num-penguins">How many penguins?: </label>
+        {/* <label htmlFor="num-species">How many species?: </label>
+        <input type="number" id="num-species" value={howManySpecies}
+          onChange={handleHowManySpeciesChange}/>
+        <br /> */}
+        {/* <label htmlFor="num-penguins">How many penguins?: </ label>
         <input type="number" id="num-penguins" /> */}
         <button type="submit">Filter</button>
       </form>

@@ -9,6 +9,7 @@ import Notifications from './Notifications';
 import ZooSelectInput from './ZooSelectInput';
 import Input from './Input';
 import PenguinsInputs from './PenguinsInputs';
+import PenguinsInputsButton from './PenguinsInputsButton';
 
 type UpdateFormProps = ChangeZooProps;
 
@@ -62,6 +63,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
               count: +penguin.count === 0 ? 'Unknown' : +penguin.count
             };
           }),
+          flagged: selectedZoo.penguins.length === 0 ? true : false,
           date: DateTime.now().toFormat('dd/MM/yy'),
         };
         const updatedZoo = await zooService.update(selectedZoo.id, zoo);
@@ -124,7 +126,14 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
 
   function addField(event: MouseEvent) {
     event.preventDefault();
-    if (selectedZoo.penguins.length < 18) {
+
+    if (selectedZoo.penguins.length === 0) {
+      setSelectedZoo({
+        ...selectedZoo,
+        penguins: [...selectedZoo.penguins,
+                   { id: 1, species: 'King Penguins', count: '' }]
+      });
+    } else if (selectedZoo.penguins.length < 18) {
       const newId = selectedZoo.penguins.at(-1)!.id + 1; // ? Is this solution okay?
       setSelectedZoo({
         ...selectedZoo,
@@ -136,6 +145,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
 
   function deleteField(event: MouseEvent, idToRemove: number) {
     event.preventDefault();
+
     if (selectedZoo.penguins.length > 0) {
       const updatedPenguins = selectedZoo.penguins.filter(
         (penguin) => penguin.id !== idToRemove
@@ -144,6 +154,8 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
     }
   }
 
+  // TODO: Refactor form itself + submit button.
+  // TODO: Add a cancel / clear button.
   return (
     <>
       {notifications ? <Notifications notifications={notifications} /> : ''}
@@ -166,6 +178,13 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
           handleSelectChange={handleSelectChange}
           handleNumberChange={handleNumberChange} addField={addField}
           deleteField={deleteField} isUpdating={true} />
+        {selectedZoo.penguins.length === 0 ? (
+          <>
+            <p>Flagged for deletion.</p>
+            <PenguinsInputsButton text={'+'} onClick={addField} />
+            <br />
+          </>
+        ) : ''}
         <button type="submit">Save</button>
       </form>
     </>

@@ -10,6 +10,7 @@ interface IZooUpdateable {
   name: string,
   location: string,
   coords: { lat: number | string, lng: number | string },
+  flagged: boolean,
   penguins: Array<{ id: number, species: string, count: number | string }>,
 }
 
@@ -19,6 +20,7 @@ interface IZoo {
   location: string,
   coords: { lat: number, lng: number },
   penguins: Array<{ id: number, species: string, count: number | string }>,
+  flagged: boolean,
   date: string,
 }
 
