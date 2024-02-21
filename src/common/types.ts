@@ -27,4 +27,10 @@ type ChangeZooProps = {
   setZoos: React.Dispatch<React.SetStateAction<IZoo[]>>,
 };
 
-export type { IZooable, IZooUpdateable, IZoo, ChangeZooProps };
+type MapProps = {
+  zoos: Array<IZoo>,
+  shownZoos: Array<IZoo>,
+  isFiltering: boolean,
+};
+
+export type { IZooable, IZooUpdateable, IZoo, ChangeZooProps, MapProps };

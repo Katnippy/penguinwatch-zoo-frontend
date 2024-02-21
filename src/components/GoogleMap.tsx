@@ -1,13 +1,11 @@
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 
-import { IZoo } from '../common/types';
+import { MapProps } from '../common/types';
 import MapPins from './MapPins';
 
-type GoogleMapProps = {
-  zoos: Array<IZoo>,
-};
+type GoogleMapProps = MapProps;
 
-export default function GoogleMap({ zoos }: GoogleMapProps) {
+export default function GoogleMap({ zoos, shownZoos, isFiltering }: GoogleMapProps) {
   const centre = { lat: 53.4790, lng: -2.2452 };
 
   return (
@@ -18,7 +16,8 @@ export default function GoogleMap({ zoos }: GoogleMapProps) {
           center={centre}
           mapId={import.meta.env.VITE_GOOGLE_MAPS_MAP_ID as string}
         >
-          <MapPins zoos={zoos}/>
+          <MapPins zoos={zoos} shownZoos={shownZoos}
+            isFiltering={isFiltering} />
         </Map>
       </div>
     </APIProvider>

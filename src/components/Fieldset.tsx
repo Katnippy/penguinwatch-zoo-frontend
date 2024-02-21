@@ -1,5 +1,6 @@
 type FieldsetProps = {
   name: string;
+  onChange(event: React.ChangeEvent<HTMLInputElement>): void,
 };
 
 const distances = [
@@ -32,7 +33,7 @@ const allSpecies = [
 ];
 
 
-export default function Fieldset({ name }: FieldsetProps) {
+export default function Fieldset({ name, onChange }: FieldsetProps) {
   if (name === 'location' || name === 'coords') {
     return (
       <>
@@ -55,7 +56,8 @@ export default function Fieldset({ name }: FieldsetProps) {
           <legend>Species</legend>
           {allSpecies.map(({ id, value }) => (
             <div key={id}>
-              <input type="checkbox" id={id} name={name} value={value} />
+              <input type="checkbox" id={id} name={name} value={value}
+                onChange={onChange} />
               <label htmlFor={id}>{value}</label>
               <br />
             </div>
