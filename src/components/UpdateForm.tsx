@@ -42,6 +42,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
   }
   async function updateZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     const { valid, validations } =
       validateZoo(selectedZoo, zoos, false);
     if (valid) {

@@ -23,8 +23,9 @@ export default function AddForm({ zoos, setZoos }: AddFormProps) {
 
   // Maybe a temporary fix because of
   // `setNewPenguins([{ id: 1, species: 'King Penguins', count: '' }])` in
-  // `clearInputs()` not working as desired due to its async nature. Instead,
-  // we forcefully `setNewPenguins()` every time `newPenguins` is cleared.
+  // `clearInputs()` not working as desired due to its quasi-async nature.
+  // Instead, we forcefully `setNewPenguins()` every time `newPenguins` is
+  // cleared.
   useEffect(() => {
     if (newPenguins.length === 0) {
       setNewPenguins([{ id: 1, species: 'King Penguins', count: '' }]);
@@ -47,6 +48,7 @@ export default function AddForm({ zoos, setZoos }: AddFormProps) {
   // ? Refactor?
   async function addZoo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     const unvalidatedZoo: IZooable = {
       name: newName,
       location: newLocation, // ? Determine this from the coords?

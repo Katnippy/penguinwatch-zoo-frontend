@@ -8,13 +8,16 @@ type InputProps = {
   onChange(
     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
   ): void,
+  required?: boolean,
 };
 
-export default function Input({ name, text, value, onChange }: InputProps) {
+export default function Input(
+  { name, text, value, onChange, required = true }: InputProps
+) {
   return (
     <>
       <label htmlFor={name}>{text}</label>
-      <input id={name} value={value} onChange={onChange} required />
+      <input id={name} value={value} onChange={onChange} required={required} />
     </>
   );
 }

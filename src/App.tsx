@@ -29,8 +29,8 @@ export default function App() {
     <>
       <Header />
       <div id="content">
-        <Sidebar zoos={zoos} setZoos={setZoos} shownZoos={shownZoos}
-          setShownZoos={setShownZoos} setIsFiltering={setIsFiltering} />
+        <Sidebar zoos={zoos} setZoos={setZoos} setShownZoos={setShownZoos}
+          setIsFiltering={setIsFiltering} />
         <GoogleMap zoos={zoos} shownZoos={shownZoos}
           isFiltering={isFiltering} />
       </div>
