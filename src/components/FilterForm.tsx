@@ -4,6 +4,7 @@ import { IZoo } from '../common/types';
 import Input from './Input';
 import Fieldset from './Fieldset';
 import SubmitButton from './SubmitButton';
+import Checkbox from './Checkbox';
 
 type FilterFormProps = {
   zoos: Array<IZoo>,
@@ -16,6 +17,7 @@ export default function FilterForm({ zoos, setShownZoos }: FilterFormProps) {
   // const [showWithinLocation, setShowWithinLocation] = useState(false);
   // const [showWithinCoords, setShowWithinCoords] = useState(false);
   const [checkedSpecies, setCheckedSpecies] = useState<Array<string>>([]);
+  const [noFlaggedZoos, setNoFlaggedZoos] = useState(true);
 
   // TODO: Refactor.
   function filterZoos(event: React.FormEvent<HTMLFormElement>) {
@@ -31,6 +33,9 @@ export default function FilterForm({ zoos, setShownZoos }: FilterFormProps) {
     setShownZoos((shownZoos) => shownZoos.filter((zoo) =>
       checkedSpecies.every((cSpecies) =>
         (zoo.penguins.map((penguin) => penguin.species).includes(cSpecies)))));
+    if (noFlaggedZoos) {
+      setShownZoos((shownZoos) => shownZoos.filter((zoo) => !zoo.flagged));
+    }
   }
 
   // ? Validate these?
@@ -52,7 +57,10 @@ export default function FilterForm({ zoos, setShownZoos }: FilterFormProps) {
     }
   }
 
-  // TODO: Add option to filter out flagged zoos.
+  function handleNoFlaggedZoosChange() {
+    setNoFlaggedZoos(!noFlaggedZoos);
+  }
+
   return (
     <>
       <form onSubmit={filterZoos}>
@@ -77,6 +85,9 @@ export default function FilterForm({ zoos, setShownZoos }: FilterFormProps) {
         <br /> */}
         {/* <label htmlFor="num-penguins">How many penguins?: </ label>
         <input type="number" id="num-penguins" /> */}
+        <Checkbox name={'no-flagged-zoos'} text={'No flagged zoos'}
+          checked={noFlaggedZoos} onChange={handleNoFlaggedZoosChange} />
+        <br />
         <SubmitButton text={'Filter'} />
       </form>
     </>
