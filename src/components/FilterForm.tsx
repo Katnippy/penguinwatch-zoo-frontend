@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { IZoo } from '../common/types';
 import Input from './Input';
 import Fieldset from './Fieldset';
+import SubmitButton from './SubmitButton';
 
 type FilterFormProps = {
   zoos: Array<IZoo>,
@@ -76,7 +77,7 @@ export default function FilterForm({ zoos, setShownZoos }: FilterFormProps) {
         <br /> */}
         {/* <label htmlFor="num-penguins">How many penguins?: </ label>
         <input type="number" id="num-penguins" /> */}
-        <button type="submit">Filter</button>
+        <SubmitButton text={'Filter'} />
       </form>
     </>
   );

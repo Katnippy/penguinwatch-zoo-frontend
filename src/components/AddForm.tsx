@@ -8,6 +8,7 @@ import zooService from '../services/zoos';
 import Notifications from './Notifications';
 import Input from './Input';
 import PenguinsInputs from './PenguinsInputs';
+import SubmitButton from './SubmitButton';
 
 type AddFormProps = ChangeZooProps;
 
@@ -160,7 +161,7 @@ export default function AddForm({ zoos, setZoos }: AddFormProps) {
           handleSelectChange={handleSelectChange}
           handleNumberChange={handleNumberChange} addField={addField}
           deleteField={deleteField} />
-        <button type="submit">Save</button>
+        <SubmitButton text={'Submit'} />
       </form>
     </>
   );

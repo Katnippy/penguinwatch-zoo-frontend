@@ -10,6 +10,7 @@ import ZooSelectInput from './ZooSelectInput';
 import Input from './Input';
 import PenguinsInputs from './PenguinsInputs';
 import PenguinsInputsButton from './PenguinsInputsButton';
+import SubmitButton from './SubmitButton';
 
 type UpdateFormProps = ChangeZooProps;
 
@@ -154,8 +155,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
     }
   }
 
-  // TODO: Refactor form itself + submit button.
-  // TODO: Add a cancel / clear button.
+  // ? Refactor form itself?
   return (
     <>
       {notifications ? <Notifications notifications={notifications} /> : ''}
@@ -185,7 +185,7 @@ export default function UpdateForm({ zoos, setZoos }: UpdateFormProps) {
             <br />
           </>
         ) : ''}
-        <button type="submit">Save</button>
+        <SubmitButton text={'Submit'} />
       </form>
     </>
   );
