@@ -3,15 +3,14 @@ import { useState, useEffect } from 'react';
 import { IZoo } from './common/types';
 import zooService from './services/zoos';
 import Header from './components/Header';
+import FilterOrAddUpdateContextProvider
+  from './components/FilterOrAddUpdateContextProvider';
 import Sidebar from './components/Sidebar';
 import GoogleMap from './components/GoogleMap';
 
 export default function App() {
   const [zoos, setZoos] = useState<Array<IZoo>>([]);
   const [shownZoos, setShownZoos] = useState<Array<IZoo>>([]);
-  const [isFiltering, setIsFiltering] = useState(true);
-
-  // ? Needs to be typed?
 
   useEffect(() => {
     void (async function hook() {
@@ -29,10 +28,10 @@ export default function App() {
     <>
       <Header />
       <div id="content">
-        <Sidebar zoos={zoos} setZoos={setZoos} setShownZoos={setShownZoos}
-          setIsFiltering={setIsFiltering} />
-        <GoogleMap zoos={zoos} shownZoos={shownZoos}
-          isFiltering={isFiltering} />
+        <FilterOrAddUpdateContextProvider>
+          <Sidebar zoos={zoos} setZoos={setZoos} setShownZoos={setShownZoos} />
+          <GoogleMap zoos={zoos} shownZoos={shownZoos} />
+        </FilterOrAddUpdateContextProvider>
       </div>
     </>
   );

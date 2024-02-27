@@ -32,7 +32,6 @@ type ChangeZooProps = {
 type MapProps = {
   zoos: Array<IZoo>,
   shownZoos: Array<IZoo>,
-  isFiltering: boolean,
 };
 
 export type { IZooable, IZooUpdateable, IZoo, ChangeZooProps, MapProps };

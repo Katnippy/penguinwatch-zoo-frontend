@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { IZoo } from '../common/types';
+import { useFilterOrAddUpdateContext } from '../context/context';
 import FilterForm from './FilterForm';
 import AddForm from './AddForm';
 import UpdateForm from './UpdateForm';
@@ -9,24 +10,21 @@ type SidebarProps = {
   zoos: Array<IZoo>,
   setZoos: React.Dispatch<React.SetStateAction<IZoo[]>>,
   setShownZoos: React.Dispatch<React.SetStateAction<IZoo[]>>,
-  setIsFiltering: React.Dispatch<React.SetStateAction<boolean>>,
 };
 
-export default function Sidebar(
-  { zoos, setZoos, setShownZoos, setIsFiltering }:
+export default function Sidebar({ zoos, setZoos, setShownZoos }:
     SidebarProps
 ) {
-  const [filterOrAddUpdate, setFilterOrAddUpdate] = useState('filter');
+  const { filterOrAddUpdate, setFilterOrAddUpdate }
+    = useFilterOrAddUpdateContext();
   const [addOrUpdate, setAddOrUpdate] = useState('add');
 
   function toggleFilterAddUpdate() {
     if (filterOrAddUpdate === 'filter') {
       setFilterOrAddUpdate('addupdate');
-      setIsFiltering(false);
     } else {
       setFilterOrAddUpdate('filter');
       setShownZoos(zoos);
-      setIsFiltering(true);
     }
   }
 

@@ -5,7 +5,7 @@ import MapPins from './MapPins';
 
 type GoogleMapProps = MapProps;
 
-export default function GoogleMap({ zoos, shownZoos, isFiltering }: GoogleMapProps) {
+export default function GoogleMap({ zoos, shownZoos }: GoogleMapProps) {
   const centre = { lat: 53.4790, lng: -2.2452 };
 
   return (
@@ -16,8 +16,7 @@ export default function GoogleMap({ zoos, shownZoos, isFiltering }: GoogleMapPro
           center={centre}
           mapId={import.meta.env.VITE_GOOGLE_MAPS_MAP_ID as string}
         >
-          <MapPins zoos={zoos} shownZoos={shownZoos}
-            isFiltering={isFiltering} />
+          <MapPins zoos={zoos} shownZoos={shownZoos}/>
         </Map>
       </div>
     </APIProvider>
